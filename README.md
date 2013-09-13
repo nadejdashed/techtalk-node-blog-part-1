@@ -27,3 +27,9 @@ cd techtalk-node-blog-part-1
 npm install
 node server.js
 ```
+
+## TODO
+
+1. Create pagination for list of posts.
+2. Add ability to remove post.
+

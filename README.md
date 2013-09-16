@@ -33,3 +33,5 @@ node server.js
 1. Create pagination for list of posts.
 2. Add ability to remove post.
 
+**Resolved by Uladzimir Hartsau**
+Congratulations!

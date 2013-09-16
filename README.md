@@ -34,4 +34,5 @@ node server.js
 2. Add ability to remove post.
 
 **Resolved by Uladzimir Hartsau**
+
 Congratulations!

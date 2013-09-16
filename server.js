@@ -16,23 +16,23 @@ app
   .use(express.static("public"))
   .listen(8080);
 
-var posts = [
-  {
-    title: "Hello!",
-    date: "2013-09-10",
-    content: "Nullam quis risus eget urna mollis ornare vel eu leo. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Donec ullamcorper nulla non metus auctor fringilla. Nulla vitae elit libero, a pharetra augue. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Maecenas faucibus mollis interdum."
-  },
-  {
-    title: "My second post!",
-    date: "2013-09-10",
-    content: "Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec id elit non mi porta gravida at eget metus. Integer posuere erat a ante venenatis dapibus posuere velit aliquet."
-  }
-];
+var posts = require("./posts").data();
 
-app.get("/", function(req, res){
+var pageSize = 5;
+
+var showPage = function(req, res){
   posts = posts.sort(function(a,b){ return a.date < b.date; });
-  res.render("index", {posts: posts});
-});
+
+  var page = parseInt(req.params.page, 10) || 0;
+  var start = page * pageSize;
+  var end = (posts.length <= (start + pageSize)) ? posts.length : start + pageSize;
+  var _posts = posts.slice(start, end);
+  res.render("index", {posts: _posts, pages: Math.ceil(posts.length / pageSize), page: page || 0, pageSize: pageSize});
+}
+
+app.get("/", showPage);
+
+app.get("/:page", showPage);
 
 app.get("/create", function(req, res){
   res.render("create");
@@ -47,6 +47,14 @@ app.get("/edit/:id", function(req, res){
   var id = parseInt(req.params.id, 10);
   var post = posts[id];
   res.render("edit", {id: id, title: post.title, content: post.content, date: post.date});
+});
+
+app.delete("/delete/:id", function(req, res){
+  if(req.params.id){
+    var id = parseInt(req.params.id, 10);
+    posts.splice(id, 1);
+  }
+  res.redirect("/");
 });
 
 app.put("/update", function(req, res){

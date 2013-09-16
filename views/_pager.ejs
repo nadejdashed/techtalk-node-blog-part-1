@@ -1,0 +1,13 @@
+  <% if(pages){ %>
+    <ul class="pager">
+    <% for(var i = 0; i < pages; i++) { %>
+      <li>
+        <% if(page == i){ %>
+          <%= (i + 1) %>
+        <% }else{ %>
+          <a href="/<%= i ? i : '' %>"><%= (i + 1) %></a>
+        <% } %>
+      </li>
+    <% } %>
+    </ul>
+  <% } %>

@@ -4,14 +4,22 @@
 <body>
   <h1>Node.js blog</h1>
   <p><a href="/create">New post</a></p>
+
+  <%- include _pager %>
+
   <% for(var i = 0; i < posts.length; i++) { %>
   <% var post = posts[i]; %>
+  <% var j = page * pageSize + i; %>
     <article>
-      <h2><a href="/show/<%= i %>"><%= post.title %></a></h2>
+      <h2><a href="/show/<%= j %>"><%= post.title %></a></h2>
       <h6><%= post.date %></h6>
       <p><%- post.content %></p>
     </article>
-    <p><a href="/edit/<%=i%>">Edit</a></p>
+    <p><a href="/edit/<%=j%>">Edit</a> | <a href="#" onclick="document.forms['deleteform<%=j%>'].submit();">Delete</a></p>
+    <form action="/delete/<%=j%>" name="deleteform<%=j%>" method="POST"><input type="hidden" name="_method" value="delete" /></form>
   <% } %>
+
+  <%- include _pager %>
+
 </body>
 </html>
